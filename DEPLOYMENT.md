@@ -38,7 +38,7 @@ vercel env add GEMINI_API_KEY
 ```
 
 When prompted:
-- Enter the value: Your Gemini API key (`AIzaSyBBtUleu9M4ia1PSRxVQJk0Mf-w7ohSAjk`)
+- Enter the value: Your Gemini API key (get it from https://aistudio.google.com/apikey)
 - Environments: Select **Production**, **Preview**, and **Development**
 
 ### 4. Redeploy with Environment Variable
