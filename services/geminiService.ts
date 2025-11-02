@@ -3,7 +3,19 @@ import { GoogleGenAI, Type, Part } from '@google/genai';
 import type { GeminiTextResponse, SocialMediaPosts, BrandVoice, UploadedMedia } from '../types';
 import { PLATFORMS, PLATFORM_ASPECT_RATIOS } from '../constants';
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Initialize API client lazily to prevent errors during app startup
+let ai: GoogleGenAI | null = null;
+
+function getAIClient(): GoogleGenAI {
+    if (!ai) {
+        const apiKey = process.env.API_KEY;
+        if (!apiKey) {
+            throw new Error('API key is not configured. Please set GEMINI_API_KEY in your environment.');
+        }
+        ai = new GoogleGenAI({ apiKey });
+    }
+    return ai;
+}
 
 const PNP_PIZZA_BRAND_VOICE: BrandVoice = {
     websiteUrl: 'https://pnpizza.com/',
@@ -86,7 +98,7 @@ export const generateSocialPosts = async (idea: string, uploadedMedia: UploadedM
             });
         }
 
-        const textResult = await ai.models.generateContent({
+        const textResult = await getAIClient().models.generateContent({
             model: textGenerationModel,
             contents: { parts },
             config: {
@@ -108,8 +120,8 @@ export const generateSocialPosts = async (idea: string, uploadedMedia: UploadedM
             const imagePrompt = textData.instagram.image_prompt || `A visually stunning image representing: ${idea}.`;
             const imageGenerationModel = 'imagen-4.0-generate-001';
             
-            const imagePromises = Object.values(PLATFORMS).map(platform => 
-                ai.models.generateImages({
+            const imagePromises = Object.values(PLATFORMS).map(platform =>
+                getAIClient().models.generateImages({
                     model: imageGenerationModel,
                     prompt: imagePrompt,
                     config: {
