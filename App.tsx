@@ -37,7 +37,7 @@ const App: React.FC = () => {
             setPosts(result);
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred.';
-            setError(`Failed to generate content. ${errorMessage}`);
+            setError(errorMessage);
             console.error(err);
         } finally {
             setIsLoading(false);
