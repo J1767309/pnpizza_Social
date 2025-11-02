@@ -4,8 +4,10 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
+    // Use root path for Vercel, GitHub Pages path for GitHub deployment
+    const base = process.env.VERCEL ? '/' : '/pnpizza_Social/';
     return {
-      base: '/pnpizza_Social/',
+      base,
       server: {
         port: 3000,
         host: '0.0.0.0',

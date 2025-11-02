@@ -34,8 +34,9 @@ const App: React.FC = () => {
         setPosts(null);
 
         try {
-            // Use API service for production, direct service for local development
-            const useAPI = !process.env.API_KEY && process.env.NODE_ENV === 'production';
+            // Use API service when API_KEY is not available (production deployment)
+            // Use direct service when API_KEY is available (.env.local for local dev)
+            const useAPI = !process.env.API_KEY;
             const result = useAPI
                 ? await generateSocialPostsViaAPI(idea, uploadedMedia)
                 : await generateSocialPosts(idea, uploadedMedia);
