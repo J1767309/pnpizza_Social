@@ -141,9 +141,9 @@ export const InputSection: React.FC<InputSectionProps> = ({ idea, setIdea, uploa
             return;
         }
 
-        const acceptedTypes = ['image/png', 'image/jpeg', 'image/webp', 'video/mp4', 'video/webm'];
+        const acceptedTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/heic', 'image/heif', 'video/mp4', 'video/webm'];
         if (!acceptedTypes.includes(file.type)) {
-            alert(`Unsupported file type: ${file.type}. Please use PNG, JPG, WEBP, MP4, or WEBM.`);
+            alert(`Unsupported file type: ${file.type}. Please use PNG, JPG, WEBP, HEIC, MP4, or WEBM.`);
             return;
         }
 
@@ -280,7 +280,7 @@ export const InputSection: React.FC<InputSectionProps> = ({ idea, setIdea, uploa
                             <input
                                 type="file"
                                 id="media-upload"
-                                accept="image/png, image/jpeg, image/webp, video/mp4, video/webm"
+                                accept="image/png, image/jpeg, image/webp, image/heic, image/heif, video/mp4, video/webm"
                                 onChange={handleMediaUpload}
                                 className="sr-only"
                                 disabled={isLoading}
@@ -301,7 +301,7 @@ export const InputSection: React.FC<InputSectionProps> = ({ idea, setIdea, uploa
                             >
                                 <ImageIcon className="w-10 h-10 text-gray-600 mb-2" />
                                 <span className="text-sm text-gray-700">Click to upload, paste an image, or drag & drop</span>
-                                <span className="text-xs text-gray-600">PNG, JPG, WEBP, MP4, WEBM up to 20MB</span>
+                                <span className="text-xs text-gray-600">PNG, JPG, WEBP, HEIC, MP4, WEBM up to 20MB</span>
                             </label>
                         </>
                     )}

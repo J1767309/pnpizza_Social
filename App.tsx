@@ -4,6 +4,7 @@ import { InputSection } from './components/InputSection';
 import { ResultCard } from './components/ResultCard';
 import { LoadingSpinner } from './components/LoadingSpinner';
 import { generateSocialPosts } from './services/geminiService';
+import { generateSocialPostsViaAPI } from './services/apiService';
 import type { SocialPost, UploadedMedia } from './types';
 import { PLATFORMS } from './constants';
 import { LinkedInIcon, TwitterIcon, InstagramIcon, SparklesIcon, FacebookIcon } from './components/icons';
@@ -33,7 +34,11 @@ const App: React.FC = () => {
         setPosts(null);
 
         try {
-            const result = await generateSocialPosts(idea, uploadedMedia);
+            // Use API service for production, direct service for local development
+            const useAPI = !process.env.API_KEY && process.env.NODE_ENV === 'production';
+            const result = useAPI
+                ? await generateSocialPostsViaAPI(idea, uploadedMedia)
+                : await generateSocialPosts(idea, uploadedMedia);
             setPosts(result);
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred.';
