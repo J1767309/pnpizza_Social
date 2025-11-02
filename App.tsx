@@ -45,18 +45,18 @@ const App: React.FC = () => {
     }, [idea, uploadedMedia]);
 
     return (
-        <div className="min-h-screen bg-gray-900 text-gray-100 font-sans p-4 sm:p-6 lg:p-8">
+        <div className="min-h-screen bg-amber-50 text-gray-800 font-sans p-4 sm:p-6 lg:p-8">
             <div className="max-w-7xl mx-auto">
                 <header className="text-center mb-8">
-                    <img 
-                        src="https://images.squarespace-cdn.com/content/v1/5773ed83414fb5b92b37751e/1470189220065-Y0K0RHVII5Y5D5NIDO4I/Final.png?format=1500w" 
-                        alt="P&P Pizza Logo" 
-                        className="mx-auto h-24 w-auto mb-4"
+                    <img
+                        src="https://images.squarespace-cdn.com/content/v1/5773ed83414fb5b92b37751e/1470189220065-Y0K0RHVII5Y5D5NIDO4I/Final.png?format=1500w"
+                        alt="P&P Pizza Logo"
+                        className="mx-auto h-32 w-auto mb-6"
                     />
-                    <h1 className="text-4xl sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+                    <h1 className="text-4xl sm:text-5xl font-bold text-red-700">
                         Social Content AI
                     </h1>
-                    <p className="mt-2 text-lg text-gray-400">
+                    <p className="mt-2 text-lg text-gray-700">
                         Your one-click solution for cross-platform social media content for P&P Pizza.
                     </p>
                 </header>
@@ -72,8 +72,8 @@ const App: React.FC = () => {
                     />
 
                     {error && (
-                        <div className="mt-8 text-center bg-red-900/50 border border-red-500 text-red-300 px-4 py-3 rounded-lg">
-                            <p>{error}</p>
+                        <div className="mt-8 text-center bg-red-50 border-2 border-red-600 text-red-800 px-4 py-3 rounded-lg shadow-md">
+                            <p className="font-semibold">{error}</p>
                         </div>
                     )}
 
@@ -81,10 +81,10 @@ const App: React.FC = () => {
                         {isLoading && <LoadingSpinner />}
                         
                         {!isLoading && !posts && !error && (
-                             <div className="text-center text-gray-500 py-16">
-                                <SparklesIcon className="mx-auto h-12 w-12 text-gray-600" />
-                                <h2 className="mt-4 text-xl font-semibold">Ready to create?</h2>
-                                <p className="mt-1">Your generated content will appear here.</p>
+                             <div className="text-center text-gray-600 py-16">
+                                <SparklesIcon className="mx-auto h-12 w-12 text-red-600" />
+                                <h2 className="mt-4 text-xl font-semibold text-gray-800">Ready to create?</h2>
+                                <p className="mt-1 text-gray-600">Your generated content will appear here.</p>
                             </div>
                         )}
                         

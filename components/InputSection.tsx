@@ -217,10 +217,10 @@ export const InputSection: React.FC<InputSectionProps> = ({ idea, setIdea, uploa
     };
 
     return (
-        <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-6 shadow-lg">
+        <div className="bg-white border-2 border-red-200 rounded-xl p-6 shadow-lg">
             <div className="flex flex-col gap-6">
                 <div>
-                    <label htmlFor="idea" className="block text-sm font-medium text-gray-300 mb-2">
+                    <label htmlFor="idea" className="block text-sm font-semibold text-gray-800 mb-2">
                         Your Content Idea
                     </label>
                     <div className="relative">
@@ -229,7 +229,7 @@ export const InputSection: React.FC<InputSectionProps> = ({ idea, setIdea, uploa
                             value={idea}
                             onChange={handleIdeaChange}
                             placeholder="e.g., A special on our famous pepperoni pizza..."
-                            className="w-full h-28 p-3 pr-12 bg-gray-900 border border-gray-600 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors placeholder-gray-500"
+                            className="w-full h-28 p-3 pr-12 bg-amber-50 border-2 border-gray-300 rounded-md focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-colors placeholder-gray-500 text-gray-800"
                             disabled={isLoading}
                         />
                          {isSpeechRecognitionSupported && (
@@ -239,9 +239,9 @@ export const InputSection: React.FC<InputSectionProps> = ({ idea, setIdea, uploa
                                     onClick={handleToggleRecording}
                                     disabled={isLoading}
                                     className={`p-2 rounded-full transition-all duration-200 ${
-                                        isRecording 
-                                        ? 'bg-red-600 text-white animate-pulse' 
-                                        : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
+                                        isRecording
+                                        ? 'bg-red-600 text-white animate-pulse'
+                                        : 'bg-red-100 hover:bg-red-200 text-red-700'
                                     } disabled:opacity-50 disabled:cursor-not-allowed`}
                                     aria-label={isRecording ? 'Stop recording' : 'Start recording'}
                                 >
@@ -255,16 +255,16 @@ export const InputSection: React.FC<InputSectionProps> = ({ idea, setIdea, uploa
 
                  {/* Media Upload Section */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                    <label className="block text-sm font-semibold text-gray-800 mb-2">
                         Upload Image or Video for Inspiration (Optional)
                     </label>
                     {uploadedMedia ? (
                         <div className="relative group">
                             {uploadedMedia.mimeType.startsWith('image/') && (
-                                <img src={`data:${uploadedMedia.mimeType};base64,${uploadedMedia.base64}`} alt="Uploaded preview" className="w-full max-h-96 object-contain bg-gray-900 rounded-md border border-gray-600" />
+                                <img src={`data:${uploadedMedia.mimeType};base64,${uploadedMedia.base64}`} alt="Uploaded preview" className="w-full max-h-96 object-contain bg-gray-100 rounded-md border-2 border-gray-300" />
                             )}
                             {uploadedMedia.mimeType.startsWith('video/') && (
-                                <video src={`data:${uploadedMedia.mimeType};base64,${uploadedMedia.base64}`} controls className="w-full max-h-96 object-contain bg-gray-900 rounded-md border border-gray-600" />
+                                <video src={`data:${uploadedMedia.mimeType};base64,${uploadedMedia.base64}`} controls className="w-full max-h-96 object-contain bg-gray-100 rounded-md border-2 border-gray-300" />
                             )}
                             <button
                                 onClick={removeMedia}
@@ -292,16 +292,16 @@ export const InputSection: React.FC<InputSectionProps> = ({ idea, setIdea, uploa
                                 onDragOver={handleDragOver}
                                 onDrop={handleDrop}
                                 className={`flex flex-col items-center justify-center w-full h-40 border-2 border-dashed  rounded-lg transition-colors ${
-                                    isLoading 
-                                    ? 'opacity-50 cursor-not-allowed border-gray-600' 
-                                    : isDragging 
-                                    ? 'border-purple-500 bg-gray-700/50' 
-                                    : 'border-gray-600 cursor-pointer hover:bg-gray-700/50 hover:border-purple-500'
+                                    isLoading
+                                    ? 'opacity-50 cursor-not-allowed border-gray-400 bg-gray-50'
+                                    : isDragging
+                                    ? 'border-red-500 bg-red-50'
+                                    : 'border-gray-400 cursor-pointer hover:bg-amber-50 hover:border-red-400'
                                 }`}
                             >
-                                <ImageIcon className="w-10 h-10 text-gray-500 mb-2" />
-                                <span className="text-sm text-gray-400">Click to upload, paste an image, or drag & drop</span>
-                                <span className="text-xs text-gray-500">PNG, JPG, WEBP, MP4, WEBM up to 20MB</span>
+                                <ImageIcon className="w-10 h-10 text-gray-600 mb-2" />
+                                <span className="text-sm text-gray-700">Click to upload, paste an image, or drag & drop</span>
+                                <span className="text-xs text-gray-600">PNG, JPG, WEBP, MP4, WEBM up to 20MB</span>
                             </label>
                         </>
                     )}
@@ -310,7 +310,7 @@ export const InputSection: React.FC<InputSectionProps> = ({ idea, setIdea, uploa
                 <button
                     onClick={onGenerate}
                     disabled={isLoading || !idea.trim()}
-                    className="w-full mt-4 flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
+                    className="w-full mt-4 flex items-center justify-center gap-2 bg-red-700 hover:bg-red-800 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
                 >
                     <SparklesIcon className="w-5 h-5" />
                     {isLoading ? 'Generating...' : 'Generate Content'}
