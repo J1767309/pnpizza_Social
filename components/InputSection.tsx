@@ -261,10 +261,10 @@ export const InputSection: React.FC<InputSectionProps> = ({ idea, setIdea, uploa
                     {uploadedMedia ? (
                         <div className="relative group">
                             {uploadedMedia.mimeType.startsWith('image/') && (
-                                <img src={`data:${uploadedMedia.mimeType};base64,${uploadedMedia.base64}`} alt="Uploaded preview" className="w-full h-64 object-contain bg-gray-900 rounded-md border border-gray-600" />
+                                <img src={`data:${uploadedMedia.mimeType};base64,${uploadedMedia.base64}`} alt="Uploaded preview" className="w-full max-h-96 object-contain bg-gray-900 rounded-md border border-gray-600" />
                             )}
                             {uploadedMedia.mimeType.startsWith('video/') && (
-                                <video src={`data:${uploadedMedia.mimeType};base64,${uploadedMedia.base64}`} controls className="w-full h-64 object-contain bg-gray-900 rounded-md border border-gray-600" />
+                                <video src={`data:${uploadedMedia.mimeType};base64,${uploadedMedia.base64}`} controls className="w-full max-h-96 object-contain bg-gray-900 rounded-md border border-gray-600" />
                             )}
                             <button
                                 onClick={removeMedia}
