@@ -1,6 +1,7 @@
 import type { SocialMediaPosts, UploadedMedia } from '../types';
 
-const API_ENDPOINT = process.env.API_ENDPOINT || '/api/generate';
+// Use Vercel API endpoint for GitHub Pages deployment
+const API_ENDPOINT = process.env.API_ENDPOINT || 'https://pnpizza-social.vercel.app/api/generate';
 
 export async function generateSocialPostsViaAPI(idea: string, uploadedMedia: UploadedMedia | null): Promise<SocialMediaPosts> {
     try {
