@@ -133,11 +133,69 @@ export const InputSection: React.FC<InputSectionProps> = ({ idea, setIdea, uploa
         setIdea(e.target.value);
     };
     
-    const processFile = (file: File | null) => {
+    const compressImage = (file: File): Promise<{ base64: string; mimeType: string }> => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    if (!ctx) {
+                        reject(new Error('Could not get canvas context'));
+                        return;
+                    }
+
+                    // Target max dimension and file size
+                    const MAX_DIMENSION = 2048;
+                    const TARGET_SIZE_MB = 10;
+
+                    let width = img.width;
+                    let height = img.height;
+
+                    // Resize if image is too large
+                    if (width > MAX_DIMENSION || height > MAX_DIMENSION) {
+                        if (width > height) {
+                            height = (height / width) * MAX_DIMENSION;
+                            width = MAX_DIMENSION;
+                        } else {
+                            width = (width / height) * MAX_DIMENSION;
+                            height = MAX_DIMENSION;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    // Start with high quality and reduce if needed
+                    let quality = 0.9;
+                    let base64 = canvas.toDataURL('image/jpeg', quality).split(',')[1];
+
+                    // Reduce quality if still too large
+                    while (base64.length > TARGET_SIZE_MB * 1024 * 1024 * 1.37 && quality > 0.5) {
+                        quality -= 0.1;
+                        base64 = canvas.toDataURL('image/jpeg', quality).split(',')[1];
+                    }
+
+                    resolve({
+                        base64,
+                        mimeType: 'image/jpeg',
+                    });
+                };
+                img.onerror = () => reject(new Error('Failed to load image'));
+                img.src = e.target?.result as string;
+            };
+            reader.onerror = () => reject(new Error('Failed to read file'));
+            reader.readAsDataURL(file);
+        });
+    };
+
+    const processFile = async (file: File | null) => {
         if (!file) return;
 
-        if (file.size > 20 * 1024 * 1024) { // 20MB limit
-            alert("File is too large. Please select a file under 20MB.");
+        if (file.size > 100 * 1024 * 1024) { // 100MB hard limit
+            alert("File is too large. Please select a file under 100MB.");
             return;
         }
 
@@ -147,15 +205,27 @@ export const InputSection: React.FC<InputSectionProps> = ({ idea, setIdea, uploa
             return;
         }
 
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            const base64String = reader.result as string;
-            setUploadedMedia({
-                base64: base64String.split(',')[1],
-                mimeType: file.type,
-            });
-        };
-        reader.readAsDataURL(file);
+        // Compress images if they're large
+        if (file.type.startsWith('image/')) {
+            try {
+                const compressed = await compressImage(file);
+                setUploadedMedia(compressed);
+            } catch (error) {
+                console.error('Error compressing image:', error);
+                alert('Failed to process image. Please try a different file.');
+            }
+        } else {
+            // For videos, just read as-is
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64String = reader.result as string;
+                setUploadedMedia({
+                    base64: base64String.split(',')[1],
+                    mimeType: file.type,
+                });
+            };
+            reader.readAsDataURL(file);
+        }
     };
 
     const handleMediaUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -301,7 +371,7 @@ export const InputSection: React.FC<InputSectionProps> = ({ idea, setIdea, uploa
                             >
                                 <ImageIcon className="w-10 h-10 text-gray-600 mb-2" />
                                 <span className="text-sm text-gray-700">Click to upload, paste an image, or drag & drop</span>
-                                <span className="text-xs text-gray-600">PNG, JPG, WEBP, HEIC, MP4, WEBM up to 20MB</span>
+                                <span className="text-xs text-gray-600">PNG, JPG, WEBP, HEIC, MP4, WEBM (images auto-compressed)</span>
                             </label>
                         </>
                     )}
